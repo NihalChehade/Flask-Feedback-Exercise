@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Feedback Form{% endblock %}
+
+{% block content %}
+{% if session['username'] == feedback.user.username %}
+<h1 class="display-4">Edit Feedback!</h1>
+
+
+<form method="POST">
+
+  {{ form.hidden_tag() }}
+
+  {% for field in form
+  if field.widget.input_type != 'hidden' %}
+  <p>
+    {{ field.label }}
+    {{ field(class_="form-control") }}
+
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+  </p>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+</form>
+    
+<form>
+    <button formmethod="GET"
+            formaction="/users/{{session['username']}}"
+            class="btn btn-danger btn-sm">Go Back
+    </button>
+</form>
+{% else %}
+<p class="alert alert-warning"> You cannot View this Page!!!</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% block title %}User Profile{% endblock %}
+{% block content %}
+{% if session['username'] == user.username %}
+
+<h1 class="display-4">{{user.username}} Profile!</h1>
+<ul>
+<li><strong class="text-info">Username:</strong> {{user.username}}</li>
+<li><strong class="text-info">email:</strong> {{user.email}}</li>
+<li><strong class="text-info">First Name:</strong> {{user.first_name}}</li>
+<li><strong class="text-info">Last Name:</strong> {{user.last_name}}</li>
+</ul>
+
+<form>
+    <button formmethod="POST"
+            formaction="/users/{{user.username}}/delete"
+            class="btn btn-danger">Delete My Account
+    </button>
+    
+    <button formmethod="POST"
+            formaction="/users/{{user.username}}/feedback/add"
+             class="btn btn-primary">Add feedback
+    </button>
+</form>
+<h1 class="display-4">My Feedbacks:</h1>
+<ul>
+{% for feedback in user.feedbacks %}
+    <li>{{feedback.content}} <a href="/feedback/{{feedback.id}}/update">edit</a> 
+        <form>
+            <button formmethod="POST"
+                    formaction="/feedback/{{feedback.id}}/delete"
+                    class="btn btn-danger btn-sm">Delete
+            </button>
+        </form> 
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="alert alert-warning"> You cannot View this Page!!!</p>
+{% endif %}
+
+
+{% endblock %}
